@@ -163,7 +163,6 @@ void L_calculate(SpMV_block *mv_blk,
         cudaDeviceSynchronize();
         gettimeofday(&t2, NULL);
         *cal_time += (t2.tv_sec - t1.tv_sec) * 1000.0 + (t2.tv_usec - t1.tv_usec) / 1000.0;
-        cudaMemcpy(b_t, b_perm, rhs * m * sizeof(VALUE_TYPE), cudaMemcpyHostToDevice);
     }
     *cal_time /= BENCH_REPEAT;
 }
@@ -187,7 +186,8 @@ void U_calculate(SpMV_block *mv_blk,
                  const double *d_recblock_Val,
                  int *ptr_offset,
                  int *index_offset,
-                 int *dcsrindex_offset)
+                 int *dcsrindex_offset,
+                 double *cal_time)
 {
     struct timeval t1, t2;
     double total_cal_time = 0;
@@ -317,12 +317,11 @@ void U_calculate(SpMV_block *mv_blk,
                 cudaDeviceSynchronize();
             }
         }
+        cudaDeviceSynchronize();
         gettimeofday(&t2, NULL);
-        total_cal_time += (t2.tv_sec - t1.tv_sec) * 1000.0 + (t2.tv_usec - t1.tv_usec) / 1000.0;
+        *cal_time += (t2.tv_sec - t1.tv_sec) * 1000.0 + (t2.tv_usec - t1.tv_usec) / 1000.0;
     }
-    double time_ave = total_cal_time / BENCH_REPEAT;
-    printf("U SpTRSV calculate usetime = %.3lf ms\n", time_ave);
-    printf("gflops = %.3lf GFlops\n", (2 * nnzTR) / (time_ave * 1e6));
+    *cal_time /= BENCH_REPEAT;
 }
 
 void device_memfree(SpMV_block *mv_blk,

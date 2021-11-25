@@ -1128,9 +1128,10 @@ void recblocking_solver_cuda(int *d_cscColPtrTR,
 
         cudaDeviceSynchronize();
         int rhs = 1;
+
         U_calculate(mv_blk, trsv_blk, sum_block, blk_m, blk_n, loc_off, tmp_off,
                     m, nnzTR, rhs, d_x, d_b, d_b_perm, d_recblock_Ptr, d_recblock_Index, d_recblock_dcsr_rowidx,
-                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset);
+                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset, cal_time);
 
         VALUE_TYPE *d_x_perm;
         cudaMalloc((void **)(&d_x_perm), sizeof(VALUE_TYPE) * n);

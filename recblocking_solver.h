@@ -24,7 +24,8 @@ void recblocking_solver(int *cscColPtr,
                         VALUE_TYPE *x_ref,
                         int rhs,
                         int lv,
-                        int substitution)
+                        int substitution,
+                        double *cal_time)
 {
     int tri_block = pow(2, lv);
     int squ_block = tri_block - 1;
@@ -139,15 +140,13 @@ void recblocking_solver(int *cscColPtr,
         VALUE_TYPE *b_d;
         cudaMalloc((void **)&b_d, rhs * m * sizeof(VALUE_TYPE));
 
-        double cal_time = 0;
         L_calculate(mv_blk, trsv_blk, sum_block, blk_m, blk_n, loc_off, tmp_off,
                     m, rhs, x_d, b_d, b_perm_d, d_recblock_Ptr, d_recblock_Index, d_recblock_dcsr_rowidx,
-                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset, &cal_time);
+                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset, cal_time);
 
         VALUE_TYPE *x_perm = (VALUE_TYPE *)malloc(sizeof(VALUE_TYPE) * n * rhs);
         cudaMemcpy(x_perm, x_d, rhs * n * sizeof(VALUE_TYPE), cudaMemcpyDeviceToHost);
         levelset_reordering_vecx(x_perm, x, levelItem, n);
-
 
         free(ptr_offset);
         free(index_offset);
@@ -230,7 +229,7 @@ void recblocking_solver(int *cscColPtr,
 
         U_calculate(mv_blk, trsv_blk, sum_block, blk_m, blk_n, loc_off, tmp_off,
                     m, nnz, rhs, x_d, b_d, b_perm, d_recblock_Ptr, d_recblock_Index, d_recblock_dcsr_rowidx,
-                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset);
+                    d_recblock_Val, ptr_offset, index_offset, dcsrindex_offset, cal_time);
 
         VALUE_TYPE *x_perm = (VALUE_TYPE *)malloc(sizeof(VALUE_TYPE) * n * rhs);
         cudaMemcpy(x_perm, x_d, rhs * n * sizeof(VALUE_TYPE), cudaMemcpyDeviceToHost);
