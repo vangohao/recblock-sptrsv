@@ -7,10 +7,10 @@ VALUE_TYPE_FLOAT = float
 
 #CUDA_PARAMETERS
 #-Xcompiler -openmp 
-NVCC_FLAGS = -O3 -w -m64 -Xptxas -dlcm=cg -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_61,code=compute_61
+NVCC_FLAGS = -O3 -w -m64 -Xptxas -dlcm=cg -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86
 
 #ENVIRONMENT_PARAMETERS
-CUDA_INSTALL_PATH = /usr/local/cuda-11.3
+CUDA_INSTALL_PATH = /usr/local/cuda-11.8
 
 #includes
 INCLUDES = -I$(CUDA_INSTALL_PATH)/include
@@ -27,3 +27,6 @@ LIBS = $(CUDA_LIBS)
 make:
 	$(CC) $(NVCC_FLAGS)  main.cu -o sptrsv-double $(INCLUDES) $(LIBS) $(OPTIONS) -D VALUE_TYPE=$(VALUE_TYPE_DOUBLE)
 	#$(CC) $(NVCC_FLAGS) main.cu -o sptrsv-float $(INCLUDES) $(LIBS) $(OPTIONS) -D VALUE_TYPE=$(VALUE_TYPE_FLOAT)
+
+matsolve-recblock: matsolve-recblock.cu
+	$(CC) $(NVCC_FLAGS)  matsolve-recblock.cu -o matsolve-recblock $(INCLUDES) $(LIBS) $(OPTIONS) -D VALUE_TYPE=$(VALUE_TYPE_DOUBLE)

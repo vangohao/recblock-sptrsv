@@ -1,8 +1,8 @@
-#include <time.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <time.h>
 
 #include <sys/time.h>
 
@@ -11,7 +11,7 @@
 #endif
 
 #ifndef BENCH_REPEAT
-#define BENCH_REPEAT 200
+#define BENCH_REPEAT 10
 #endif
 
 #ifndef WARP_SIZE
