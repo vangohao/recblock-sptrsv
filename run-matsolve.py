@@ -82,14 +82,22 @@ else:
             [416, 256, 192, 160, 144, 128, 112, 104],  # stencildiamond,width=1
         ]  # dof=1~8
     else:
+        # mesh_size = [
+        #     [512, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=0
+        #     [432, 272, 208, 160, 144, 128, 112, 96],  # stencilstar,width=1
+        #     [336, 208, 160, 128, 112, 96, 80, 80],  # stencilbox,width=0
+        #     [432, 272, 208, 160, 144, 128, 112, 96],  # stencilstarfill1,width=0
+        #     [336, 208, 160, 128, 112, 96, 80, 80],  # stencildiamond,width=1
+        # ]  # dof=1~8
         mesh_size = [
-            [512, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=0
-            [432, 272, 208, 160, 144, 128, 112, 96],  # stencilstar,width=1
-            [336, 208, 160, 128, 112, 96, 80, 80],  # stencilbox,width=0
-            [432, 272, 208, 160, 144, 128, 112, 96],  # stencilstarfill1,width=0
-            [336, 208, 160, 128, 112, 96, 80, 80],  # stencildiamond,width=1
-        ]  # dof=1~8
-    dof = list(range(1, 9))
+            [400, 288, 208, 160, 128],  # stencilstar,width=0 dof=1,2不一样
+            [384, 272, 160, 128, 96],  # stencilstar,width=1 dof=1不一样
+            [336, 208, 128, 96, 80],  # stencilbox,width=0
+            [400, 272, 160, 128, 96],  # stencilstarfill1,width=0 dof=1不一样
+            [336, 208, 128, 96, 80],  # stencildiamond,width=1
+        ]  # dof = 1, 2, 4, 6, 8
+    # dof = list(range(1, 9))
+    dof = [1, 2, 4, 6, 8]
     problems = [(0, 0), (0, 1), (1, 0), (2, 0), (3, 1)]
     for i in range(len(dof)):
         for j in range(5):
