@@ -13,6 +13,8 @@ bandwidth_test = ""
 if len(args) > 2:
     bandwidth_test = "-" + args[2]
 
+test_cast_j = int(args[3])
+
 
 def run_test(arguments):
     global parsed_data
@@ -73,14 +75,21 @@ if bandwidth_test == "":
     generate_test(2, 0, 4)
     generate_test(3, 1, 4)
 else:
-    if os.environ.get("CUDAARCHS") == 80:
+    if os.environ.get("CUDAARCHS") == "80":
+        # mesh_size = [
+        #     [560, 416, 320, 256, 224, 192, 176, 160],  # stencilstar,width=0
+        #     [544, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=1
+        #     [416, 256, 192, 160, 144, 128, 112, 104],  # stencilbox,width=0
+        #     [544, 336, 256, 208, 176, 160, 144, 128],  # stencilstarfill1,width=0
+        #     [416, 256, 192, 160, 144, 128, 112, 104],  # stencildiamond,width=1
+        # ]  # dof=1~8
         mesh_size = [
-            [560, 416, 320, 256, 224, 192, 176, 160],  # stencilstar,width=0
-            [544, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=1
-            [416, 256, 192, 160, 144, 128, 112, 104],  # stencilbox,width=0
-            [544, 336, 256, 208, 176, 160, 144, 128],  # stencilstarfill1,width=0
-            [416, 256, 192, 160, 144, 128, 112, 104],  # stencildiamond,width=1
-        ]  # dof=1~8
+            [400, 288, 256, 192, 160],  # stencilstar,width=0 dof=1,2不一样
+            [384, 336, 208, 160, 128],  # stencilstar,width=1 dof=1不一样
+            [400, 256, 160, 128, 104],  # stencilbox,width=0
+            [400, 304, 208, 160, 128],  # stencilstarfill1,width=0 dof=1不一样
+            [400, 256, 160, 128, 104],  # stencildiamond,width=1
+        ]  # dof = 1, 2, 4, 6, 8
     else:
         # mesh_size = [
         #     [512, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=0
@@ -100,7 +109,8 @@ else:
     dof = [1, 2, 4, 6, 8]
     problems = [(0, 0), (0, 1), (1, 0), (2, 0), (3, 1)]
     for i in range(len(dof)):
-        for j in range(5):
+        for j in [test_cast_j]:
+        # for j in range(len(problems)):
             run_test(
                 list(
                     map(
