@@ -15,7 +15,6 @@ if len(args) > 2:
 
 test_cast_j = int(args[3])
 
-
 def run_test(arguments):
     global parsed_data
     command = [executable_path] + arguments
@@ -83,13 +82,20 @@ else:
         #     [544, 336, 256, 208, 176, 160, 144, 128],  # stencilstarfill1,width=0
         #     [416, 256, 192, 160, 144, 128, 112, 104],  # stencildiamond,width=1
         # ]  # dof=1~8
+        # mesh_size = [
+        #     [400, 288, 256, 192, 160],  # stencilstar,width=0 dof=1,2不一样
+        #     [384, 336, 208, 160, 128],  # stencilstar,width=1 dof=1不一样
+        #     [400, 256, 160, 128, 104],  # stencilbox,width=0
+        #     [400, 304, 208, 160, 128],  # stencilstarfill1,width=0 dof=1不一样
+        #     [400, 256, 160, 128, 104],  # stencildiamond,width=1
+        # ]  # dof = 1, 2, 4, 6, 8
         mesh_size = [
-            [400, 288, 256, 192, 160],  # stencilstar,width=0 dof=1,2不一样
-            [384, 336, 208, 160, 128],  # stencilstar,width=1 dof=1不一样
-            [400, 256, 160, 128, 104],  # stencilbox,width=0
-            [400, 304, 208, 160, 128],  # stencilstarfill1,width=0 dof=1不一样
-            [400, 256, 160, 128, 104],  # stencildiamond,width=1
-        ]  # dof = 1, 2, 4, 6, 8
+            [320],
+            [256],
+            [192],
+            [256],
+            [192],
+        ]  # dof = 3
     else:
         # mesh_size = [
         #     [512, 336, 256, 208, 176, 160, 144, 128],  # stencilstar,width=0
@@ -98,19 +104,26 @@ else:
         #     [432, 272, 208, 160, 144, 128, 112, 96],  # stencilstarfill1,width=0
         #     [336, 208, 160, 128, 112, 96, 80, 80],  # stencildiamond,width=1
         # ]  # dof=1~8
+        # mesh_size = [
+        #     [400, 288, 208, 160, 128],  # stencilstar,width=0 dof=1,2不一样
+        #     [384, 272, 160, 128, 96],  # stencilstar,width=1 dof=1不一样
+        #     [336, 208, 128, 96, 80],  # stencilbox,width=0
+        #     [400, 272, 160, 128, 96],  # stencilstarfill1,width=0 dof=1不一样
+        #     [336, 208, 128, 96, 80],  # stencildiamond,width=1
+        # ]  # dof = 1, 2, 4, 6, 8
         mesh_size = [
-            [400, 288, 208, 160, 128],  # stencilstar,width=0 dof=1,2不一样
-            [384, 272, 160, 128, 96],  # stencilstar,width=1 dof=1不一样
-            [336, 208, 128, 96, 80],  # stencilbox,width=0
-            [400, 272, 160, 128, 96],  # stencilstarfill1,width=0 dof=1不一样
-            [336, 208, 128, 96, 80],  # stencildiamond,width=1
-        ]  # dof = 1, 2, 4, 6, 8
+            [256],
+            [208],
+            [160],
+            [208],
+            [160]
+        ]
     # dof = list(range(1, 9))
-    dof = [1, 2, 4, 6, 8]
+    dof = [3]
     problems = [(0, 0), (0, 1), (1, 0), (2, 0), (3, 1)]
     for i in range(len(dof)):
-        for j in [test_cast_j]:
-        # for j in range(len(problems)):
+        # for j in [test_cast_j]:
+        for j in range(len(problems)):
             run_test(
                 list(
                     map(
